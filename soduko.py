@@ -9,6 +9,10 @@ class Sudoku(object):
         self.lives = 3
         self.history = []
         self.gamestarted = False
+        self.setup_board()
+
+    def get_lives(self):
+        return self.lives
 
     def get_board(self):
         lines = []
@@ -29,9 +33,9 @@ class Sudoku(object):
                 print(f"Invalid input: row {row}, col {col}, value {n}")
             return
         if not self.is_valid_move(row, col, n):
-            self.lives -= 1
             if self.gamestarted:
                 print(f"Invalid move! Number {n} already in row, column, or block. Lives left: {self.lives}")
+                self.lives -= 1 
             return
 
         self.board[row][col] = str(n)
