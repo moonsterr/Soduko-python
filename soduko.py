@@ -8,6 +8,7 @@ class Sudoku(object):
         self.board = [[Sudoku.EMPTY for _ in range(Sudoku.SIZE)] for _ in range(Sudoku.SIZE)]
         self.lives = 3
         self.history = []
+        self.gamestarted = False
 
     def get_board(self):
         lines = []
@@ -24,11 +25,13 @@ class Sudoku(object):
     
     def set_cell(self, row,col,n):
         if not self.verify_numbers(row,col,n):
-            print(f"Invalid input: row {row}, col {col}, value {n}")
+            if self.gamestarted:
+                print(f"Invalid input: row {row}, col {col}, value {n}")
             return
         if not self.is_valid_move(row, col, n):
             self.lives -= 1
-            print(f"Invalid move! Number {n} already in row, column, or block. Lives left: {self.lives}")
+            if self.gamestarted:
+                print(f"Invalid move! Number {n} already in row, column, or block. Lives left: {self.lives}")
             return
 
         self.board[row][col] = str(n)
@@ -56,10 +59,11 @@ class Sudoku(object):
         return True
     def remaining_lives(self):
         return self.lives
+    def setup_board(self):
+        for i in range(30):
+            num = random.randint(1,9)
+            col = random.randint(0,8)
+            row = random.randint(0,8)
+            self.set_cell(row=row,col=col,n=num)
+        self.gamestarted = True
     
-sudoku = Sudoku()
-# print(sudoku.get_board())
-sudoku.set_cell(2,3,1)
-sudoku.set_cell(2,4,2)
-sudoku.set_cell(2,5,3)
-print(sudoku.get_board())
